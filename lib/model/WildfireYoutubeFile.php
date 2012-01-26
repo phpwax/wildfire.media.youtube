@@ -11,6 +11,8 @@ class WildfireYoutubeFile{
     Zend_Loader::loadClass('Zend_Gdata_YouTube');
     Zend_Loader::loadClass('Zend_Gdata_AuthSub');
     Zend_Loader::loadClass('Zend_Gdata_App_Exception');
+    $httpClient = Zend_Gdata_AuthSub::getHttpClient(Config::get('youtube/token'));
+    return new Zend_Gdata_YouTube($httpClient, 0, 0, Config::get('youtube/developer_key'));
   }
 
   public function set($media_item){
@@ -19,18 +21,26 @@ class WildfireYoutubeFile{
 
   //should return a url to display the item
   public function get($media_item, $width=false, $return_obj = false){
-
+    $yt = $this->includes();
+    $vid = $yt->getVideoEntry($media_item->source);
+    $data= $media_item->row;
+    foreach($vid->mediaGroup->content as $content) if($content->type === 'application/x-shockwave-flash') $data['url'] = $content->url;
+    if($return_obj) return $data;
+    else return "http://www.youtube-nocookie.com/embed/".$media_item->source;
   }
 
   //this will actually render the contents of the image
   public function show($media_item, $size=false){
     $data = $this->get($media_item, $size, true);
-    header("Location: ".$data['source']);
+    header("Location: ".$data['url']);
 
   }
   //generates the tag to be displayed - return generic icon if not an image
   public function render($media_item, $size, $title="preview"){
-
+    $url = $this->get($media_item, $size);
+    if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
+    else $w_h = " width='560' height='315' ";
+    return '<iframe '.$w_h.'src="'.$url.'" frameborder="0" allowfullscreen></iframe>';
   }
 
 
@@ -39,18 +49,17 @@ class WildfireYoutubeFile{
   }
 
   public function sync($location){
-    $this->includes();
+    $yt = $this->includes();
     $ids = array();
     $info = array();
     $class = get_class($this);
 
-    $httpClient = Zend_Gdata_AuthSub::getHttpClient(Config::get('youtube/token'));
-    $yt = new Zend_Gdata_YouTube($httpClient, 0, 0, Config::get('youtube/developer_key'));
+
     foreach($yt->getUserUploads('officialsubaruuk') as $video){
-      $source = str_replace("http://gdata.youtube.com/feeds/api/videos/", "", $video->getID()->text);
+      $source = $video->getVideoId();
       $model = new WildfireMedia;
       if($found = $model->filter("media_class", $class)->filter("source", $source)->first()) $found->update_attributes(array('status'=>1));
-      else $found = $model->update_attributes(array('source'=>$video->id,
+      else $found = $model->update_attributes(array('source'=>$source,
                                                 'uploaded_location'=>$video->getID()->text,
                                                 'status'=>1,
                                                 'media_class'=>$class,
