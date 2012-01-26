@@ -1,0 +1,50 @@
+<?
+set_include_path("../plugins/wildfire.media.youtube/ZendGdata/library/");
+//YOU MUST CHANGE $nextUrl and $developerKey to your own information
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+session_start();
+require_once '../plugins/wildfire.media.youtube/ZendGdata/library/Zend/Loader.php';
+Zend_Loader::loadClass('Zend_Gdata_YouTube');
+Zend_Loader::loadClass('Zend_Gdata_AuthSub');
+Zend_Loader::loadClass('Zend_Gdata_App_Exception');
+
+$nextUrl = '';
+$developerKey = '';
+$applicationId = $clientId = 0;
+
+function authenticated()
+{
+    if (isset($_SESSION['sessionToken'])) {
+      return true;
+    }
+}
+
+function getAuthSubRequestUrl($nextUrl)
+{
+    $scope = 'http://gdata.youtube.com';
+    $secure = false;
+    $session = true;
+    return Zend_Gdata_AuthSub::getAuthSubTokenUri($nextUrl, $scope, $secure, $session);
+}
+
+function getAuthSubHttpClient($nextUrl)
+{
+    if (!isset($_SESSION['sessionToken']) && !isset($_GET['token']) ){
+        echo '<a href="' . getAuthSubRequestUrl($nextUrl) . '">Login!</a>';
+        return;
+    } else if (!isset($_SESSION['sessionToken']) && isset($_GET['token'])) {
+      $_SESSION['sessionToken'] = Zend_Gdata_AuthSub::getAuthSubSessionToken($_GET['token']);
+    }
+    $httpClient = Zend_Gdata_AuthSub::getHttpClient($_SESSION['sessionToken']);
+    return $httpClient;
+}
+
+$yt = new Zend_Gdata_YouTube(getAuthSubHttpClient($nextUrl), $applicationId, $clientId, $developerKey);
+
+
+if(authenticated()){
+  print_r($_SESSION);
+  print_r($yt->getUserUploads('officialsubaruuk'));
+}
+?>
