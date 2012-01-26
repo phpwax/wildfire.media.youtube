@@ -26,6 +26,7 @@ class WildfireYoutubeFile{
     $data= $media_item->row;
     foreach($vid->mediaGroup->content as $content) if($content->type === 'application/x-shockwave-flash') $data['url'] = $content->url;
     if($return_obj) return $data;
+    else if(!$width) return $data['url'];
     else return "http://www.youtube-nocookie.com/embed/".$media_item->source;
   }
 
