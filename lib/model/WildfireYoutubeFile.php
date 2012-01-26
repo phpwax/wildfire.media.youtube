@@ -14,7 +14,7 @@ class WildfireYoutubeFile{
     $httpClient = Zend_Gdata_AuthSub::getHttpClient(Config::get('youtube/token'));
     return new Zend_Gdata_YouTube($httpClient, 0, 0, Config::get('youtube/developer_key'));
   }
-
+  //doesnt upload at the moment
   public function set($media_item){
     return false;
   }
