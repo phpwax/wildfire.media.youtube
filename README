@@ -1,4 +1,14 @@
-http://code.google.com/apis/youtube/dashboard/ to get /make developer app key
+SETUP:
+* Login as the account you want to access
+* Copy auth.tmp to public
+* fill in $nextUrl (do this to you local address site.dev/auth.php etc) and $developerKey
+* visit site.dev/auth.php
+* will give you a link to authorise api access for the app
+* agree to it
+* you will be redirected by $nextUrl and you should see print_r of session & dump of all videos
 
+You might need to set this in you php.ini:
+[PHP_OPENSSL]
+extension=php_openssl.dll
 
-http://framework.zend.com/manual/en/zend.gdata.authsub.html
+http://framework.zend.com/manual/en/zend.gdata.youtube.html
