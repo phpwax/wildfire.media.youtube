@@ -41,7 +41,7 @@ class WildfireYoutubeFile{
     $url = $this->get($media_item, $size);
     if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
     else $w_h = " width='560' height='315' ";
-    return '<iframe '.$w_h.'src="'.$url.'" frameborder="0" allowfullscreen></iframe>';
+    return '<iframe '.$w_h.'src="'.$url.'?rel=0" frameborder="0" allowfullscreen></iframe>';
   }
 
 
