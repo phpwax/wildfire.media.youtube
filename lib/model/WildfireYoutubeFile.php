@@ -56,7 +56,7 @@ class WildfireYoutubeFile{
     $class = get_class($this);
 
 
-    foreach($yt->getUserUploads('officialsubaruuk') as $video){
+    foreach($yt->getUserUploads(Config::get("youtube/username")) as $video){
       $source = $video->getVideoId();
       $model = new WildfireMedia;
       if($found = $model->filter("media_class", $class)->filter("source", $source)->first()) $found->update_attributes(array('status'=>1));
