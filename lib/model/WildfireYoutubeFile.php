@@ -51,12 +51,25 @@ class WildfireYoutubeFile{
 
   public function sync($location){
     $yt = $this->includes();
+    $start = 0;
+    $videos = array();
+    $total = false;
+    while($start < $total || $total === false){
+      $query = $yt->newVideoQuery();
+      $query->maxResults = 50;
+      $query->startIndex = $start+1;
+      $query->setAuthor(Config::get("youtube/username"));
+      $videoFeed = $yt->getVideoFeed($query);
+      $total = $videoFeed->getTotalResults()->text;
+      foreach($videoFeed as $video) $videos[] = $video;
+      $start = count($videos);
+    }
+
     $ids = array();
     $info = array();
     $class = get_class($this);
 
-
-    foreach($yt->getUserUploads(Config::get("youtube/username")) as $video){
+    foreach($videos as $video){
       $source = $video->getVideoId();
       $model = new WildfireMedia;
       if($found = $model->filter("media_class", $class)->filter("source", $source)->first()) $found->update_attributes(array('status'=>1));
@@ -88,7 +101,6 @@ class WildfireYoutubeFile{
     foreach($media->filter("status", 1)->filter("media_class", $class)->filter("sync_location", $location)->all() as $missing) $missing->update_attributes(array('status'=>-1));
     return $info;
   }
-
 
 }
 ?>
