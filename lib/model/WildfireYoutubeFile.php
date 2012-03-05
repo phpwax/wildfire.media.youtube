@@ -36,14 +36,13 @@ class WildfireYoutubeFile{
     header("Location: ".$data['url']);
 
   }
-  //generates the tag to be displayed - return generic icon if not an image
-  public function render($media_item, $size, $title="preview"){
+//generates the tag to be displayed - return generic icon if not an image
+  public function render($media_item, $size, $title="preview", $min_size=200){
     $url = $this->get($media_item, $size);
     if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
     else $w_h = " width='560' height='315' ";
-    return '<iframe '.$w_h.'src="'.$url.'?rel=0&wmode=opaque" frameborder="0" allowfullscreen></iframe>';
+    return '<iframe '.$w_h.'src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" frameborder="0" allowfullscreen></iframe>';
   }
-
 
   public function sync_locations(){
     return array('1'=>array('value'=>'ALL', 'label'=>'All Videos'));
