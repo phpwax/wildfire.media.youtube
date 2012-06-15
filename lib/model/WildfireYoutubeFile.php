@@ -22,7 +22,13 @@ class WildfireYoutubeFile{
   //should return a url to display the item
   public function get($media_item, $width=false, $return_obj = false){
     $yt = $this->includes();
-    $vid = $yt->getVideoEntry($media_item->source);
+    try{
+      $vid = $yt->getVideoEntry($media_item->source);
+    }catch(Exception $e){
+      WaxLog::log("error", "[WildfireYoutubeFile] error getting video $media_item->source");
+      return false;
+    }
+    
     $data= $media_item->row;
     foreach($vid->mediaGroup->content as $content) if($content->type === 'application/x-shockwave-flash') $data['url'] = $content->url;
     if($return_obj) return $data;
