@@ -22,7 +22,13 @@ class WildfireYoutubeFile{
   //should return a url to display the item
   public function get($media_item, $width=false, $return_obj = false){
     $yt = $this->includes();
-    $vid = $yt->getVideoEntry($media_item->source);
+    try{
+      $vid = $yt->getVideoEntry($media_item->source);
+    }catch(Exception $e){
+      WaxLog::log("error", "[WildfireYoutubeFile] error getting video $media_item->source");
+      return false;
+    }
+    
     $data= $media_item->row;
     foreach($vid->mediaGroup->content as $content) if($content->type === 'application/x-shockwave-flash') $data['url'] = $content->url;
     if($return_obj) return $data;
@@ -38,7 +44,7 @@ class WildfireYoutubeFile{
   }
 //generates the tag to be displayed - return generic icon if not an image
   public function render($media_item, $size, $title="preview", $min_size=200){
-    $url = $this->get($media_item, $size);
+    if(!($url = $this->get($media_item, $size))) return;
     if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
     else $w_h = " width='560' height='315' ";
     return '<iframe '.$w_h.'src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" frameborder="0" allowfullscreen></iframe>';
