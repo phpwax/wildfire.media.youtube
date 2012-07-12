@@ -43,7 +43,7 @@ class WildfireYoutubeFile{
 
   }
 //generates the tag to be displayed - return generic icon if not an image
-  public function render($media_item, $size, $title="preview", $min_size=200){
+  public function render($media_item, $size, $title="preview", $class="attached_youtube", $min_size=200){
     if(!($url = $this->get($media_item, $size))) return;
     if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
     else $w_h = " width='560' height='315' ";
