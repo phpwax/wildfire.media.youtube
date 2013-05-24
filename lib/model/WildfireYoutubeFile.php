@@ -6,8 +6,8 @@ class WildfireYoutubeFile{
   public $scope = "http://gdata.youtube.com";
 
   public function includes(){
-    set_include_path(PLUGIN_DIR."wildfire.media.youtube/ZendGdata/library/");
-    require_once PLUGIN_DIR.'wildfire.media.youtube/ZendGdata/library/Zend/Loader.php';
+    set_include_path(__DIR__."/../../ZendGdata/library/");
+    require_once __DIR__."/../../ZendGdata/library/Zend/Loader.php";
     Zend_Loader::loadClass('Zend_Gdata_YouTube');
     Zend_Loader::loadClass('Zend_Gdata_AuthSub');
     Zend_Loader::loadClass('Zend_Gdata_App_Exception');
