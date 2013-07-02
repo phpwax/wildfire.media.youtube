@@ -1,23 +1,12 @@
 jQuery(document).ready(function(){
 
   jQuery(window).bind("media.wildfireyoutubefile.preview", function(e, row, preview_container){
+    var yt_iframe = jQuery("<iframe>"),
+        permalink = row.find("img").data("permalink")+'?rel=0&wmode=opaque&controls=0';
 
-    var str = "";
+    yt_iframe.attr({"src":permalink,"width":200,"height":Math.floor(200/1.778),"frameborder":0,"allowfullscreen":true});
 
-    var html = row.html();
-
-    if(html.indexOf("<iframe") >= 0){
-      var h = parseInt(row.find("iframe").attr("height"),10),
-          w = parseInt(row.find("iframe").attr("width"),10),
-          r = 200/w
-          ;
-
-      if(h && w) str += html.replace(h, Math.round(h*r)).replace('"'+w+'"',200);
-    }
-    else str += html;
-
-    console.log(str);
-    preview_container.html(str);
+    preview_container.html(yt_iframe);
 
   });
 
