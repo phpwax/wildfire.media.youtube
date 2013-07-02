@@ -1,10 +1,10 @@
 <?
-set_include_path("../plugins/wildfire.media.youtube/ZendGdata/library/");
+set_include_path("../vendor/phpwax/wildfire.media.youtube/ZendGdata/library/");
 //YOU MUST CHANGE $nextUrl and $developerKey to your own information
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 session_start();
-require_once '../plugins/wildfire.media.youtube/ZendGdata/library/Zend/Loader.php';
+require_once '../vendor/phpwax/wildfire.media.youtube/ZendGdata/library/Zend/Loader.php';
 Zend_Loader::loadClass('Zend_Gdata_YouTube');
 Zend_Loader::loadClass('Zend_Gdata_AuthSub');
 Zend_Loader::loadClass('Zend_Gdata_App_Exception');
