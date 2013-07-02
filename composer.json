@@ -9,12 +9,13 @@
     ],
     "minimum-stability": "dev",
     "require": {
-      "phpwax/phpwax": "3.2.*"
+      "phpwax/phpwax": "3.2.*",
+      "phpwax/wildfire.media":"7.1.*",
     },
     "license": "MIT",
     "autoload": {
       "classmap": [
-        "lib/", "resources/"
+        "lib/"
       ],
       "files": ["ini.php"]
     }
