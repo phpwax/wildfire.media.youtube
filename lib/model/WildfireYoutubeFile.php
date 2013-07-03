@@ -45,9 +45,9 @@ class WildfireYoutubeFile{
 //generates the tag to be displayed - return generic icon if not an image
   public function render($media_item, $size, $title="preview", $class="attached_youtube", $min_size=200){
     if(!($url = $this->get($media_item, $size))) return;
-    if($size) $w_h = " width='$size' height='".floor($size/1.778)."' ";
-    else $w_h = " width='560' height='315' ";
-    return '<iframe '.$w_h.'src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" frameborder="0" allowfullscreen></iframe>';
+    if($size) $w_h = " data-width='$size' data-height='".floor($size/1.778)."' ";
+    else $w_h = " data-width='560' data-height='315' ";
+    return '<img width="'.$size.'" src="http://i.ytimg.com/vi/'.$media_item->source.'/default.jpg" alt="'.$title.'" class="'.$class.'" '.$w_h.' data-src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" data-frameborder="0" data-allowfullscreen="true">';
   }
 
   public function sync_locations(){
