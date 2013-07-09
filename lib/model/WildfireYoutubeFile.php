@@ -47,7 +47,7 @@ class WildfireYoutubeFile{
     if(!($url = $this->get($media_item, $size))) return;
     if($size) $w_h = " data-width='$size' data-height='".floor($size/1.778)."' ";
     else $w_h = " data-width='560' data-height='315' ";
-    return '<img width="'.$size.'" src="http://i.ytimg.com/vi/'.$media_item->source.'/default.jpg" alt="'.$title.'" class="'.$class.'" '.$w_h.' data-src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" data-frameborder="0" data-allowfullscreen="true">';
+    return '<img width="'.$size.'" src="http://i.ytimg.com/vi/'.$media_item->source.'/hqdefault.jpg" alt="'.$title.'" class="'.$class.'" '.$w_h.' data-src="'.$url.'?rel=0&wmode=opaque'.(($size < $min_size) ? "&controls=0": "").'" data-frameborder="0" data-allowfullscreen="true">';
   }
 
   public function sync_locations(){
