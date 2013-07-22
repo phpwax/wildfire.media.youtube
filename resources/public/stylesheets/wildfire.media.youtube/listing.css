@@ -1,0 +1,10 @@
+.youtube_media_wrapper{
+  position:relative;
+}
+  .youtube_media_wrapper .youtube_play{
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:2;
+    background:url(/images/wildfire.media.youtube/play-button.png) center center no-repeat;
+  }
