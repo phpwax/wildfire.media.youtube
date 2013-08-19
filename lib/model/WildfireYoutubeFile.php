@@ -103,5 +103,15 @@ class WildfireYoutubeFile{
     return $info;
   }
 
+  public function thumbnail($media_item, $size=false){
+    $yt = $this->includes();
+    try{
+      $vid = $yt->getVideoEntry($media_item->source);
+    }catch(Exception $e){
+      WaxLog::log("error", "[WildfireYoutubeFile] error getting video $media_item->source");
+      return false;
+    }
+    return $vid->mediaGroup->thumbnail[0]->url;
+  }
 }
 ?>
