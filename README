@@ -6,6 +6,14 @@ SETUP:
 * will give you a link to authorise api access for the app
 * agree to it
 * you will be redirected by $nextUrl and you should see print_r of session & dump of all videos
+* copy the username, developerkey and authtoken into the config for the site in the following form:
+
+  'youtube'=>array(
+    'username'=>"",
+    'token'=>"",
+    'developer_key'=>""
+  )
+
 
 You might need to set this in you php.ini:
 [PHP_OPENSSL]

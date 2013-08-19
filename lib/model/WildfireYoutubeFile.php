@@ -60,11 +60,7 @@ class WildfireYoutubeFile{
     $videos = array();
     $total = false;
     while($start < $total || $total === false){
-      $query = $yt->newVideoQuery();
-      $query->maxResults = 50;
-      $query->startIndex = $start+1;
-      $query->setAuthor(Config::get("youtube/username"));
-      $videoFeed = $yt->getVideoFeed($query);
+      $videoFeed = $yt->getuserUploads(Config::get("youtube/username"));
       $total = $videoFeed->getTotalResults()->text;
       foreach($videoFeed as $video) $videos[] = $video;
       $start = count($videos);
